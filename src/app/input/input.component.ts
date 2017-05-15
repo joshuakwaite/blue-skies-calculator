@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-// import {Validators, FormGroup, FormArray, FormBuilder, NgForm} from '@angular/forms';
 import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms'
 
 @Component({
@@ -248,9 +247,12 @@ export class InputComponent implements OnInit {
     }
   ];
   calculateForm: FormGroup;
+  usedStates = ['Alaska'];
+  regDs = ['b', 'c'];
 
 
   // @ViewChild('f') inputForm: NgForm;
+
 
 
   constructor() { }
@@ -261,8 +263,9 @@ export class InputComponent implements OnInit {
         'state': new FormControl(null, Validators.required),
         'investorNumber': new FormControl(null, Validators.required),
         'totalInvested': new FormControl(null, Validators.required),
-        'specialName': new FormControl(null, Validators.required)
-      })
+        'regD': new FormControl(null, Validators.required)
+      }),
+      'stateGroups': new FormArray([])
     });
   }
 
@@ -283,12 +286,26 @@ export class InputComponent implements OnInit {
   // }
 
   onSubmit() {
-    console.log(this.calculateForm.value)
+    console.log(this.calculateForm.value);
+
   }
 
   onAddStateGroup() {
     (<FormArray>this.calculateForm.get('stateGroups')).push(new FormControl(null, Validators.required))
   }
+
+  removeStateGroup(index: number) {
+    (<FormArray>this.calculateForm.get('stateGroups')).removeAt(index)
+  }
+
+
+
+  // usedStatesValidator(control: FormControl): {[s: string]: boolean} {
+  //   if (this.usedStates.indexOf(control.value) !== -1) {
+  //     return {'State is already in use': true};
+  //   }
+  //   return null
+  // }
 
 
 

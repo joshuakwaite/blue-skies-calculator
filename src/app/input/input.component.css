@@ -5,3 +5,17 @@ select.ng-pristine {
 input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
+
+select.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+.center-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio {
+  display: inline-block;
+}

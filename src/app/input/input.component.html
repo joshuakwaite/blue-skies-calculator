@@ -1,45 +1,28 @@
-<!--<div class="row">-->
-  <!--<div class="col-xs-2 col-xs-offset-2">-->
-    <!--State Selector-->
-    <!--<form #f="ngForm">-->
-      <!--<select name="state" class="form-control" ngModel #stateInput [(ngModel)]="test">-->
-        <!--<option value="" disabled>Choose a state</option>-->
-        <!--<option *ngFor="let state of states" [ngValue]="state">-->
-          <!--{{ state.name }}-->
-        <!--</option>-->
-      <!--</select>-->
-    <!--</form>-->
-    <!--&lt;!&ndash;<p *ngIf="f.value.state.name">Form value: {{ f.value.state.name }}</p>&ndash;&gt;-->
-  <!--</div>-->
-  <!--<div class="col-xs-2">-->
-    <!--Number of investors-->
-    <!--<input type="number" class="form-control" [(ngModel)]="investorNumber">-->
-  <!--</div>-->
-  <!--<div class="col-xs-2">-->
-    <!--Total invested-->
-    <!--<input type="number" class="form-control" [(ngModel)]="totalInvested">-->
-  <!--</div>-->
-  <!--<div class="col-xs-2">-->
-    <!--Special number from Blair-->
-    <!--<input type="string" class="form-control" [(ngModel)]="specialNumber">-->
-  <!--</div>-->
-<!--</div>-->
-<!--<button class="btn btn-primary" (click)="clicking()">Submit</button>-->
 
-
-<!--<hr>-->
 <form [formGroup]="calculateForm" (ngSubmit)="onSubmit()">
 <div class="panel panel-default">
   <div class="panel-heading">Blue Skies Calculator</div>
-  <div class="panel-body" formGroupName="stateGroup">
+  <div class="panel-body">
+    <div formGroupName="stateGroup">
       <div class="col-sm-3 nopadding">
         <div class="form-group">
-          <select name="state" class="form-control" formControlName="state" ngModel >
+          <select name="state" class="form-control" formControlName="state">
             <option value="" disabled>Choose a state</option>
             <option *ngFor="let state of states" [ngValue]="state">
               {{ state.name }}
             </option>
           </select>
+        </div>
+      </div>
+      <div class="col-sm-3 nopadding center-radio">
+        <div class="input-group">
+          <span style="padding-right: 4px;">RegD Type:</span>
+        <div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">
+            <label>
+          <input type="radio" name="regD" formControlName="regD" [value]="regD">
+            {{regD}}
+          </label>
+          </div>
         </div>
       </div>
     <div class="col-sm-3 nopadding">
@@ -53,22 +36,58 @@
         <span class="help-block" *ngIf="!calculateForm.get('stateGroup.totalInvested').valid && calculateForm.get('stateGroup.totalInvested').touched">Please enter a valid number!</span>
       </div>
     </div>
+    <div class="clear"></div>
+    </div>
+
+  <div formArrayName="stateGroups">
+    <div class="form-group" *ngFor="let stateControls of calculateForm.get('stateGroups').controls; let i = index">
+
     <div class="col-sm-3 nopadding">
       <div class="form-group">
+        <select name="state" class="form-control" [formControlName]="i" ngModel >
+          <option value="" disabled>Choose a state</option>
+          <option *ngFor="let state of states" [ngValue]="state">
+            {{ state.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+      <div class="col-sm-3 nopadding center-radio">
         <div class="input-group">
-        <input type="text" class="form-control" id="specialNumber" name="specialNumber" formControlName="specialName" placeholder="Special Number">
-          <div class="input-group-btn">
-            <button class="btn btn-success" type="button"  (click)="onAddStateGroup();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+          <span style="padding-right: 4px;">RegD Type:</span>
+          <div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">
+            <label>
+              <input type="radio" [value]="regD" [formControlName]="i">
+              {{regD}}
+            </label>
           </div>
         </div>
       </div>
+    <div class="col-sm-3 nopadding">
+      <div class="form-group">
+        <input type="number" class="form-control" id="investorNumber" name="investorNumber" [formControlName]="i" placeholder="Number of Investors">
+      </div>
+    </div>
+    <div class="col-sm-3 nopadding">
+      <div class="form-group">
+        <div class="input-group">
+        <input type="number" class="form-control" id="totalInvested" name="totalInvested" [formControlName]="i" placeholder="Total Invested">
+          <div class="input-group-btn">
+            <button class="btn btn-danger" type="button"  (click)="removeStateGroup(i);"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <span class="help-block" *ngIf="!calculateForm.get('stateGroup.totalInvested').valid && calculateForm.get('stateGroup.totalInvested').touched">Please enter a valid number!</span>
+      </div>
     </div>
     <div class="clear"></div>
-  </div>
-  <div>
 
+    </div>
   </div>
-  <div class="panel-footer"><small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field</small>, <small>Press <span class="glyphicon glyphicon-minus gs"></span> to remove form field</small></div>
+  </div>
+
+  <button class="btn btn-success center-block" type="button"  (click)="onAddStateGroup();">Add Another State Field</button>
+  <br>
+  <div class="panel-footer"><small>Press <span class="glyphicon glyphicon-minus gs"></span> to remove form field</small></div>
 </div>
 <button class="btn btn-primary" type="submit">Submit</button>
   <span class="help-block" *ngIf="!calculateForm.valid && calculateForm.touched">Please fill out each data field!</span>
