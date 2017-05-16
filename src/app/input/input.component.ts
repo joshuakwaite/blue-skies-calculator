@@ -18,10 +18,6 @@ export class InputComponent implements OnInit {
       abbreviation: "AK"
     },
     {
-      name: "American Samoa",
-      abbreviation: "AS"
-    },
-    {
       name: "Arizona",
       abbreviation: "AZ"
     },
@@ -48,10 +44,6 @@ export class InputComponent implements OnInit {
     {
       name: "District Of Columbia",
       abbreviation: "DC"
-    },
-    {
-      name: "Federated States Of Micronesia",
-      abbreviation: "FM"
     },
     {
       name: "Florida",
@@ -259,13 +251,19 @@ export class InputComponent implements OnInit {
 
   ngOnInit() {
     this.calculateForm = new FormGroup({
-      'stateGroup': new FormGroup ({
+      // 'stateGroup': new FormGroup ({
+      //   'state': new FormControl(null, Validators.required),
+      //   'investorNumber': new FormControl(null, Validators.required),
+      //   'totalInvested': new FormControl(null, Validators.required),
+      //   'regD': new FormControl(null, Validators.required)
+      // }),
+      'stateGroups': new FormArray([new FormGroup ({
         'state': new FormControl(null, Validators.required),
         'investorNumber': new FormControl(null, Validators.required),
         'totalInvested': new FormControl(null, Validators.required),
         'regD': new FormControl(null, Validators.required)
-      }),
-      'stateGroups': new FormArray([])
+      })
+      ])
     });
   }
 
@@ -291,7 +289,12 @@ export class InputComponent implements OnInit {
   }
 
   onAddStateGroup() {
-    (<FormArray>this.calculateForm.get('stateGroups')).push(new FormControl(null, Validators.required))
+    (<FormArray>this.calculateForm.get('stateGroups')).push(new FormGroup({
+      'state': new FormControl(null, Validators.required),
+      'investorNumber': new FormControl(null, Validators.required),
+      'totalInvested': new FormControl(null, Validators.required),
+      'regD': new FormControl(null, Validators.required)
+    }))
   }
 
   removeStateGroup(index: number) {
@@ -310,3 +313,16 @@ export class InputComponent implements OnInit {
 
 
 }
+
+
+// <div class="col-sm-3 nopadding center-radio">
+// <div class="input-group">
+// <span style="padding-right: 4px;">RegD Type:</span>
+// <div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">
+// <label>
+//   <input type="radio" name="regD" formControlName="regD" [value]="regD">
+//   {{regD}}
+// </label>
+// </div>
+// </div>
+// </div>

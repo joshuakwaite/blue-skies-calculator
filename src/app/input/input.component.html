@@ -3,48 +3,51 @@
 <div class="panel panel-default">
   <div class="panel-heading">Blue Skies Calculator</div>
   <div class="panel-body">
-    <div formGroupName="stateGroup">
-      <div class="col-sm-3 nopadding">
-        <div class="form-group">
-          <select name="state" class="form-control" formControlName="state">
-            <option value="" disabled>Choose a state</option>
-            <option *ngFor="let state of states" [ngValue]="state">
-              {{ state.name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="col-sm-3 nopadding center-radio">
-        <div class="input-group">
-          <span style="padding-right: 4px;">RegD Type:</span>
-        <div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">
-            <label>
-          <input type="radio" name="regD" formControlName="regD" [value]="regD">
-            {{regD}}
-          </label>
-          </div>
-        </div>
-      </div>
-    <div class="col-sm-3 nopadding">
-      <div class="form-group">
-        <input type="number" class="form-control" id="investorNumber" name="investorNumber" formControlName="investorNumber" placeholder="Number of Investors">
-      </div>
-    </div>
-    <div class="col-sm-3 nopadding">
-      <div class="form-group">
-        <input type="number" class="form-control" id="totalInvested" name="totalInvested" formControlName="totalInvested" placeholder="Total Invested">
-        <span class="help-block" *ngIf="!calculateForm.get('stateGroup.totalInvested').valid && calculateForm.get('stateGroup.totalInvested').touched">Please enter a valid number!</span>
-      </div>
-    </div>
-    <div class="clear"></div>
-    </div>
+    <!--<div formGroupName="stateGroup">-->
+      <!--<div class="col-sm-3 nopadding">-->
+        <!--<div class="form-group">-->
+          <!--<select name="state" class="form-control" formControlName="state" ngModel>-->
+            <!--<option value="" disabled>Choose a state</option>-->
+            <!--<option *ngFor="let state of states" [ngValue]="state">-->
+              <!--{{ state.name }}-->
+            <!--</option>-->
+          <!--</select>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="col-sm-3 nopadding center-radio">-->
+        <!--<div class="input-group">-->
+          <!--<span style="padding-right: 4px;">RegD Type:</span>-->
+          <!--<div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">-->
+            <!--<label>-->
+              <!--<input type="radio" name="regD" formControlName="regD" [value]="regD">-->
+              <!--{{regD}}-->
+            <!--</label>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+    <!--<div class="col-sm-3 nopadding">-->
+      <!--<div class="form-group">-->
+        <!--<input type="number" class="form-control" id="investorNumber" name="investorNumber" formControlName="investorNumber" placeholder="Number of Investors">-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-3 nopadding">-->
+      <!--<div class="form-group">-->
+        <!--<input type="number" class="form-control" id="totalInvested" name="totalInvested" formControlName="totalInvested" placeholder="Total Invested">-->
+        <!--<span class="help-block" *ngIf="!calculateForm.get('stateGroup.totalInvested').valid && calculateForm.get('stateGroup.totalInvested').touched">Please enter a valid number!</span>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="clear"></div>-->
+    <!--</div>-->
+
+    <!--DYNAMIC FIELDS-->
 
   <div formArrayName="stateGroups">
-    <div class="form-group" *ngFor="let stateControls of calculateForm.get('stateGroups').controls; let i = index">
-
+    <div class="form-group" *ngFor="let stateControls of calculateForm.get('stateGroups').controls; let i = index;" [formGroupName]="i">
     <div class="col-sm-3 nopadding">
       <div class="form-group">
-        <select name="state" class="form-control" [formControlName]="i" ngModel >
+        <select name="state" class="form-control" formControlName="state" ngModel >
           <option value="" disabled>Choose a state</option>
           <option *ngFor="let state of states" [ngValue]="state">
             {{ state.name }}
@@ -57,26 +60,27 @@
           <span style="padding-right: 4px;">RegD Type:</span>
           <div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">
             <label>
-              <input type="radio" [value]="regD" [formControlName]="i">
+              <input type="radio" [value]="regD" formControlName="regD">
               {{regD}}
             </label>
+
           </div>
         </div>
       </div>
     <div class="col-sm-3 nopadding">
       <div class="form-group">
-        <input type="number" class="form-control" id="investorNumber" name="investorNumber" [formControlName]="i" placeholder="Number of Investors">
+        <input type="number" class="form-control" id="investorNumber" name="investorNumber" formControlName="investorNumber" placeholder="Number of Investors">
       </div>
     </div>
     <div class="col-sm-3 nopadding">
       <div class="form-group">
         <div class="input-group">
-        <input type="number" class="form-control" id="totalInvested" name="totalInvested" [formControlName]="i" placeholder="Total Invested">
+        <input type="number" class="form-control" id="totalInvested" name="totalInvested" formControlName="totalInvested" placeholder="Total Invested">
           <div class="input-group-btn">
             <button class="btn btn-danger" type="button"  (click)="removeStateGroup(i);"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
           </div>
         </div>
-        <span class="help-block" *ngIf="!calculateForm.get('stateGroup.totalInvested').valid && calculateForm.get('stateGroup.totalInvested').touched">Please enter a valid number!</span>
+        <!--<span class="help-block" *ngIf="!calculateForm.get('stateGroup.totalInvested').valid && calculateForm.get('stateGroup.totalInvested').touched">Please enter a valid number!</span>-->
       </div>
     </div>
     <div class="clear"></div>
