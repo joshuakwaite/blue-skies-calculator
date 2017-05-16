@@ -258,7 +258,7 @@ export class InputComponent implements OnInit {
       //   'regD': new FormControl(null, Validators.required)
       // }),
       'stateGroups': new FormArray([new FormGroup ({
-        'state': new FormControl(null, Validators.required),
+        'stateCode': new FormControl(null, Validators.required),
         'investorNumber': new FormControl(null, Validators.required),
         'totalInvested': new FormControl(null, Validators.required),
         'regD': new FormControl(null, Validators.required)
@@ -285,12 +285,13 @@ export class InputComponent implements OnInit {
 
   onSubmit() {
     console.log(this.calculateForm.value);
+    console.log(JSON.stringify(this.calculateForm.value));
 
   }
 
   onAddStateGroup() {
     (<FormArray>this.calculateForm.get('stateGroups')).push(new FormGroup({
-      'state': new FormControl(null, Validators.required),
+      'stateCode': new FormControl(null, Validators.required),
       'investorNumber': new FormControl(null, Validators.required),
       'totalInvested': new FormControl(null, Validators.required),
       'regD': new FormControl(null, Validators.required)

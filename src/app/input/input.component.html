@@ -47,9 +47,9 @@
     <div class="form-group" *ngFor="let stateControls of calculateForm.get('stateGroups').controls; let i = index;" [formGroupName]="i">
     <div class="col-sm-3 nopadding">
       <div class="form-group">
-        <select name="state" class="form-control" formControlName="state" ngModel >
+        <select name="state" class="form-control" formControlName="stateCode" ngModel >
           <option value="" disabled>Choose a state</option>
-          <option *ngFor="let state of states" [ngValue]="state">
+          <option *ngFor="let state of states" [ngValue]="state.abbreviation">
             {{ state.name }}
           </option>
         </select>
