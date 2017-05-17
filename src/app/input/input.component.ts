@@ -1,5 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms'
+import {CalculateService} from "../http.service";
+import {Response} from "@angular/http";
 
 @Component({
   selector: 'app-input',
@@ -54,10 +56,6 @@ export class InputComponent implements OnInit {
       abbreviation: "GA"
     },
     {
-      name: "Guam",
-      abbreviation: "GU"
-    },
-    {
       name: "Hawaii",
       abbreviation: "HI"
     },
@@ -92,10 +90,6 @@ export class InputComponent implements OnInit {
     {
       name: "Maine",
       abbreviation: "ME"
-    },
-    {
-      name: "Marshall Islands",
-      abbreviation: "MH"
     },
     {
       name: "Maryland",
@@ -158,10 +152,6 @@ export class InputComponent implements OnInit {
       abbreviation: "ND"
     },
     {
-      name: "Northern Mariana Islands",
-      abbreviation: "MP"
-    },
-    {
       name: "Ohio",
       abbreviation: "OH"
     },
@@ -174,16 +164,8 @@ export class InputComponent implements OnInit {
       abbreviation: "OR"
     },
     {
-      name: "Palau",
-      abbreviation: "PW"
-    },
-    {
       name: "Pennsylvania",
       abbreviation: "PA"
-    },
-    {
-      name: "Puerto Rico",
-      abbreviation: "PR"
     },
     {
       name: "Rhode Island",
@@ -214,10 +196,6 @@ export class InputComponent implements OnInit {
       abbreviation: "VT"
     },
     {
-      name: "Virgin Islands",
-      abbreviation: "VI"
-    },
-    {
       name: "Virginia",
       abbreviation: "VA"
     },
@@ -241,22 +219,16 @@ export class InputComponent implements OnInit {
   calculateForm: FormGroup;
   usedStates = ['Alaska'];
   regDs = ['b', 'c'];
+  totalFilingCost;
+  efdMessage;
+  returnedStates;
+  loadResults = false;
+  isNotValid = false;
 
-
-  // @ViewChild('f') inputForm: NgForm;
-
-
-
-  constructor() { }
+  constructor(private calculateService: CalculateService) { }
 
   ngOnInit() {
     this.calculateForm = new FormGroup({
-      // 'stateGroup': new FormGroup ({
-      //   'state': new FormControl(null, Validators.required),
-      //   'investorNumber': new FormControl(null, Validators.required),
-      //   'totalInvested': new FormControl(null, Validators.required),
-      //   'regD': new FormControl(null, Validators.required)
-      // }),
       'stateGroups': new FormArray([new FormGroup ({
         'stateCode': new FormControl(null, Validators.required),
         'investorNumber': new FormControl(null, Validators.required),
@@ -267,26 +239,36 @@ export class InputComponent implements OnInit {
     });
   }
 
-  // save(model: Customer) {
-  //   // call API to save customer
-  //   console.log(model);
-  // }
-
-  // clicking(form: NgForm) {
-  //   console.log(form.value)
-  // }
-
-  // clicking () {
-  //   console.log(this.inputForm);
-  //
-  //   this.inputForm.reset();
-  //
-  // }
-
   onSubmit() {
-    console.log(this.calculateForm.value);
-    console.log(JSON.stringify(this.calculateForm.value));
+    if (this.calculateForm.valid) {
 
+    this.totalFilingCost = undefined;
+
+
+    let outputData = {'input1': this.calculateForm.value};
+
+    let output = JSON.stringify(outputData);
+
+
+    this.calculateService.putStateRequest(output)
+      .subscribe(
+      (response: Response) => {
+        const data = response.json();
+
+        this.loadResults = true;
+       this.totalFilingCost = data.response.blueSkiesTotal;
+       this.efdMessage = data.response.efdMessage;
+       this.returnedStates = data.response.detailedStateInfo;
+
+      },
+          (error) => console.log(error)
+    );
+    window.scrollTo(0,0);
+    } else {
+      this.isNotValid = true;
+      this.loadResults = false;
+      window.scrollTo(0,0);
+    }
   }
 
   onAddStateGroup() {
@@ -296,34 +278,22 @@ export class InputComponent implements OnInit {
       'totalInvested': new FormControl(null, Validators.required),
       'regD': new FormControl(null, Validators.required)
     }))
+    window.scrollTo(0,document.body.scrollHeight);
   }
 
   removeStateGroup(index: number) {
     (<FormArray>this.calculateForm.get('stateGroups')).removeAt(index)
   }
 
+  resetData() {
+     if (confirm("Are you sure you want to clear this form? All input data will be lost.")) {
+       this.calculateForm.reset();
+       this.loadResults = false;
+       this.totalFilingCost = undefined;
+       this.isNotValid = false;
+     }
 
-
-  // usedStatesValidator(control: FormControl): {[s: string]: boolean} {
-  //   if (this.usedStates.indexOf(control.value) !== -1) {
-  //     return {'State is already in use': true};
-  //   }
-  //   return null
-  // }
-
+     }
 
 
 }
-
-
-// <div class="col-sm-3 nopadding center-radio">
-// <div class="input-group">
-// <span style="padding-right: 4px;">RegD Type:</span>
-// <div class="form-group radio" *ngFor="let regD of regDs" style="margin-top: 4px; padding-right: 4px; padding-left: 4px;">
-// <label>
-//   <input type="radio" name="regD" formControlName="regD" [value]="regD">
-//   {{regD}}
-// </label>
-// </div>
-// </div>
-// </div>

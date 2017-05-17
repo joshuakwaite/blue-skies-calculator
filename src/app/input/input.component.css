@@ -19,3 +19,49 @@ select.ng-invalid.ng-touched {
 .radio {
   display: inline-block;
 }
+
+.panel-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-footer-buttons {
+  margin-left: auto;
+}
+
+.help-block {
+  color: red;
+}
+
+/*CARDS*/
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 300px;
+  margin: 5px 5px 5px 5px;
+  display: inline-flex;
+  height: 120px;
+  background-color: #fbfbfb;
+  /*-ms-word-wrap:;*/
+  /*word-wrap: normal;*/
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+  width: 100%;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+}
